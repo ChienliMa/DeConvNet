@@ -190,7 +190,7 @@ def Find_cifa_10():
         this_Deconv = tile_raster_images( this_Deconv, img_shape = (32,32), tile_shape = (3,3), 
                                    tile_spacing=(1, 1), scale_rows_to_unit_interval=True, 
                                     output_pixel_vals=True)
-        this_pairmap = np.append( this_map, this_Deconv, axis = 0)
+        this_pairmap = np.append( this_map, this_Deconv, axis = 1)
 
         if bigbigmap == None:
             bigbigmap = this_pairmap
