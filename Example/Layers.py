@@ -16,14 +16,14 @@ def sigmoid( ):
 
 
 def relu_nonlinear( input ):
-    return ( T._abs( input ) + input ) / 2
+    return ( T.abs_( input ) + input ) / 2
 
 
 class ConvPoolLayer( object ):
     """
     """
-    def __init__(self, rng, input, filter_shape, image_shape, W = None, b = None,
-                       Means = None, poolsize=(2, 2), activation = linear ):
+    def __init__(self, input, filter_shape, image_shape, W = None, b = None,
+               Means = None, poolsize=(2, 2), activation = linear, rng = None):
         """
         Allocate a LeNetConvPoolLayer with shared variable internal parameters.
 
