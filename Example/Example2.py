@@ -20,6 +20,21 @@ from Layers import ConvPoolLayer,relu_nonlinear
 
 def activation( a ):
     return ( np.abs(a) + a ) /2
+    
+    
+class Pairs( object ):
+    """
+    Customized class to avoid ambigous compare result of tuples
+    """
+    def __init__( self, activation, input ):
+        self.act = activation
+        self.sam = input
+        
+    def __lt__( self, obj ):
+        """
+        Customized __lt__ to avoid compare input
+        """
+        return self.act < obj.act
 
 class DeConvNet( object ):
     """
@@ -86,7 +101,7 @@ class DeConvNet( object ):
                                 activation = activation)                       
 
         self.Stages = [ up_layer0, up_layer1, up_layer2,
-                           down_layer2, down_layer1, down_layer1]
+                           down_layer2, down_layer1, down_layer0]
         
     def DeConv( self, input, kernel_index ):
 
@@ -97,8 +112,8 @@ class DeConvNet( object ):
         l2u  , sw2 = self.Stages[2].GetOutput( l1u )
         
         # only visulize selected kernel
-        l2u[0,:kernel_index-1,...]*=0
-        l2u[0,kernel_index:,...]*=0
+        l2u[0,:kernel_index,...]*=0
+        l2u[0,kernel_index+1:,...]*=0
         
         
         l2d = self.Stages[3].GetOutput( l2u, sw2 )
@@ -114,7 +129,7 @@ def findmaxactivation( Net, samples, num_of_maximum, kernel_list):
     返回list of tuple，包含最大激活值
     """    
 
-    Heaps = { str(kernel_i): [(-100,-100) for i in xrange(num_of_maximum)]\
+    Heaps = { kernel_i: [ Pairs( -100, -i) for i in xrange(num_of_maximum)]\
                     for kernel_i in  kernel_list  }
 
     
@@ -127,15 +142,11 @@ def findmaxactivation( Net, samples, num_of_maximum, kernel_list):
         sam = sam.reshape((1,)+sam.shape )      
         activate_value = Net.forward(sam).flatten()
         for kernel_i in kernel_list:
-            print "activation",activate_value[kernel_i]
-            heappushpop( Heaps[str(kernel_i)], ( activate_value[kernel_i], sam ))
-            
-def cmp_lt(x, y):
-    # Use __lt__ if available; otherwise, try __le__.
-    # In Py3.x, only __lt__ will be called.
-    return (x < y) if hasattr(x, '__lt__') else (not y <= x)
+            heappushpop( Heaps[kernel_i], Pairs( activate_value[kernel_i], sam ))
 
     return Heaps
+    
+
     
 
 def Find_cifa_10():
@@ -151,7 +162,45 @@ def Find_cifa_10():
     
     kernel_list = [ 2,23,60,12,45,9 ]    
     
-    Heaps = findmaxactivation( Net, samples, 5, kernel_list )
+    Heaps = findmaxactivation( Net, samples, 9, kernel_list )
+    bigbigmap = None
+    for kernel_index in Heaps:
+        print 'kernelindex',kernel_index
+        heap = Heaps[kernel_index]
+        this_sams = []
+        this_Deconv = []
+        for pairs in heap:
+            this_sam = pairs.sam
+            this_sams.append( this_sam.reshape([3,32,32]) )
+            this_Deconv.append( Net.DeConv( this_sam, kernel_index ).reshape([3,32,32]) )
+        
+        this_sams = np.array( this_sams )
+        this_sams = np.transpose( this_sams, [ 1, 0, 2, 3 ])
+        this_sams = this_sams.reshape( [ 3, 9, 32*32 ])
+        this_sams = tuple( [ this_sams[i] for i in xrange(3)] + [None] )    
+        
+        this_Deconv = np.array( this_Deconv )
+        this_Deconv = np.transpose( this_Deconv, [ 1, 0, 2, 3 ])
+        this_Deconv = this_Deconv.reshape( [ 3, 9, 32*32 ])
+        this_Deconv = tuple( [ this_Deconv[i] for i in xrange(3)] + [None] )
+
+        this_map = tile_raster_images( this_sams, img_shape = (32,32), tile_shape = (3,3), 
+                                   tile_spacing=(1, 1), scale_rows_to_unit_interval=True, 
+                                    output_pixel_vals=True)
+        this_Deconv = tile_raster_images( this_Deconv, img_shape = (32,32), tile_shape = (3,3), 
+                                   tile_spacing=(1, 1), scale_rows_to_unit_interval=True, 
+                                    output_pixel_vals=True)
+        this_pairmap = np.append( this_map, this_Deconv, axis = 0)
+
+        if bigbigmap == None:
+            bigbigmap = this_pairmap
+        else:
+            bigbigmap = np.append(bigbigmap, this_pairmap, axis=1)
+    plt.imshow(bigbigmap)
+    plt.show()
+        
+        
+        
 
 
 if __name__ == "__main__":
