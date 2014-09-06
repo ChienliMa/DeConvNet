@@ -1,1 +1,7 @@
-a simple implementation of deconvnet aimming at visulize CNN
+DeConvNet（there is a typo in the repository name）
+=========
+
+SUM
+---
+>
+>
