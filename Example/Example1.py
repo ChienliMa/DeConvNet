@@ -17,6 +17,11 @@ def activation( a ):
     return ( np.abs(a) + a ) /2
 
 def example1():
+    """
+    In this example, I visulize what the 3rd layer 'see' altoghther.
+    By set none of ferature maps in 3rd layer to zero.
+    """
+    
 
     print "Loading model..."
     model_file = open( 'params.pkl', 'r')

@@ -24,7 +24,11 @@ def activation( a ):
     
 class Pairs( object ):
     """
-    Customized class to avoid ambigous compare result of tuples
+    If we store  ( activation,sample ) using tuple/list, when two activetion
+    value equal, the heappushpop algorithm will compare sample to sort the 
+    list/tuple and than raise an 'any() or all()' error. To avoid this, we 
+    design an class which implement the __lt__ method to ensure the heap
+    algorithm always compare to activation.
     """
     def __init__( self, activation, input ):
         self.act = activation
@@ -36,10 +40,9 @@ class Pairs( object ):
         """
         return self.act < obj.act
 
+
 class DeConvNet( object ):
-    """
-    for one-time use
-    """
+    
     def __init__( self ):
 
         print "Loading model..."
@@ -124,10 +127,25 @@ class DeConvNet( object ):
         
     
 def findmaxactivation( Net, samples, num_of_maximum, kernel_list):
+                           
     """
-    function，给定forward和数据集，加上model，所需的参数，
-    返回list of tuple，包含最大激活值
-    """    
+    Return a list of heaps. Each heap(list) corresponding to specific kernel 
+    marked by kernel_list. In each heap are num_of_maximum Pairs whose samples
+    yield max activation to corresponding kernel in given samples.
+
+    :type Net: Deconvnet which the last layer has feature maps heights and 
+                weights only 1.( manually cut off edge of input )
+    :param Net: class Net with method Forward and Deconv( interface )
+
+    :type samples: 4D-array int the form of BC01
+    :param samples: numpy.ndarray
+
+    :type num_of_maximum: number of maximums to be restored in each heap
+    :param num_of_maximum: int
+
+    :type kernel_list: the index of kernels to be visulized( start from 0 )
+    :param kernel_list: list of int
+    """ 
 
     Heaps = { kernel_i: [ Pairs( -100, -i) for i in xrange(num_of_maximum)]\
                     for kernel_i in  kernel_list  }
