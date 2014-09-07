@@ -2,29 +2,32 @@ DeCoonvNet
 ===========
 
 Personal implementation of DeConvNet, used to visualize CNN. Follow Pro.Zealer's paper:
-	
+    
 >>[Visualizing and Understanding Convolutional Networks](http://arxiv.org/pdf/1311.2901v3.pdf)<br />
 
 
 
 ##What in here?
 ###CPRStages_up(down)
-fdsfsdffsfdsfsfdsf
+    One stage consists of one pooling layer(2D, not overlapping), one convolution layer(2D not overlapping) and one activation function. The series of up_stage and down_stage are totally inverse. For more detail, look at the code in DeCoovNet/DeConvNet/CPRStage.
 
 
 
 ###Examples:
-    Two examples inllustrate how to use this to visulize CNN. Admittedlly, currentle this is not very easy to use.
+    Two examples inllustrate how to use this to visulize CNN. Admittedlly, currentle this is not very easy to use. My fault :-(
+    
+    I have trained a cifa-10 CNN with 3 conv layers and a 70% AR. And the paremeters stored in DeCoonvNet/Exampls/Params.pkl . Here I will show how this work using this structure.
 
 >####Example1
->balabalaala
+>Visulize what the kernels in 3rd layer 'see' together by not setting other any output map to zero.( pictures were randomly picked )
 
 >![EX1](http://pic.wenwen.soso.com/p/20110923/20110923201826-1347223277.jpg "EX1")  
 
 
 
 >####Example2
->balabalabala
+>       Use heaps to find samples that yield max activation value in 2,23,60,12,45,9th kernel and visualize what those kernels see separatly by setting other feature map to zeros. 
+    More specifically, the the 23rd kernel is sensitive to boats, the 12nd and 45th kernel respones to cars strongly and the 9th kernel like airplanes very much.
 
 >![EX2](http://img4.3lian.com/sucai/img4/522/b166.gif "EX2")  
 

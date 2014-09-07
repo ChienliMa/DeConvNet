@@ -150,7 +150,8 @@ def findmaxactivation( Net, samples, num_of_maximum, kernel_list):
     print "totally %d samples" % samples.shape[0]    
     for sam in samples:
         index += 1
-        print "pushpop %d sample" % index
+        if index % 100 == 0:
+            print "pushpoping ",index,"th sample"  
         # from 3-dim to 4-dim
         sam = sam.reshape((1,)+sam.shape )      
         activate_value = Net.forward(sam).flatten()
@@ -174,8 +175,8 @@ def Find_cifa_10():
     
     Heaps = findmaxactivation( Net, samples, 9, kernel_list )
     bigbigmap = None
-    for kernel_index in Heaps:
-        print 'kernelindex',kernel_index
+    for kernel_index in Heaps:        
+        print 'dealing with',kernel_index,'th kernel'
         heap = Heaps[kernel_index]
         this_sams = []
         this_Deconv = []
@@ -200,12 +201,16 @@ def Find_cifa_10():
         this_Deconv = tile_raster_images( this_Deconv, img_shape = (32,32), tile_shape = (3,3), 
                                    tile_spacing=(1, 1), scale_rows_to_unit_interval=True, 
                                     output_pixel_vals=True)
-        this_pairmap = np.append( this_map, this_Deconv, axis = 1)
+        this_pairmap = np.append( this_map, this_Deconv, axis = 0)
 
         if bigbigmap == None:
             bigbigmap = this_pairmap
+            segment_line = 255*np.ones([bigbigmap.shape[0],1,4],dtype='uint8')
         else:
-            bigbigmap = np.append(bigbigmap, this_pairmap, axis=1)
+            bigbigmap = np.append(bigbigmap, segment_line, axis = 1)            
+            bigbigmap = np.append(bigbigmap, this_pairmap, axis = 1)
+            
+            
     plt.imshow(bigbigmap)
     plt.show()
 
