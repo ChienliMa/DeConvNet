@@ -21,7 +21,6 @@ def example1():
     In this example, I visulize what the 3rd layer 'see' altoghther.
     By set none of ferature maps in 3rd layer to zero.
     """
-    
 
     print "Loading model..."
     model_file = open( 'params.pkl', 'r')
@@ -104,10 +103,8 @@ def example1():
     
     bigmap = np.append( input_map, output_map, axis = 1 )      
 
-
     plt.imshow(bigmap)
     plt.show()
 
 if __name__ == "__main__":
     example1()
-

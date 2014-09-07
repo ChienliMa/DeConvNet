@@ -17,10 +17,8 @@ if class_path not in sys.path:
 from CPRStage import CPRStage_Up,CPRStage_Down
 from Layers import ConvPoolLayer,relu_nonlinear
 
-
 def activation( a ):
     return ( np.abs(a) + a ) /2
-    
     
 class Pairs( object ):
     """
@@ -40,7 +38,6 @@ class Pairs( object ):
         """
         return self.act < obj.act
 
-
 class DeConvNet( object ):
     
     def __init__( self ):
@@ -56,7 +53,6 @@ class DeConvNet( object ):
         layer1_b = params[-3]
         layer2_w = params[-6]
         layer2_b = params[-5]
-
 
         # compile theano function for efficient forward propagation
         x = T.tensor4('x')
@@ -149,7 +145,6 @@ def findmaxactivation( Net, samples, num_of_maximum, kernel_list):
 
     Heaps = { kernel_i: [ Pairs( -100, -i) for i in xrange(num_of_maximum)]\
                     for kernel_i in  kernel_list  }
-
     
     index = 0
     print "totally %d samples" % samples.shape[0]    
@@ -163,9 +158,6 @@ def findmaxactivation( Net, samples, num_of_maximum, kernel_list):
             heappushpop( Heaps[kernel_i], Pairs( activate_value[kernel_i], sam ))
 
     return Heaps
-    
-
-    
 
 def Find_cifa_10():
     """
@@ -216,15 +208,7 @@ def Find_cifa_10():
             bigbigmap = np.append(bigbigmap, this_pairmap, axis=1)
     plt.imshow(bigbigmap)
     plt.show()
-        
-        
-        
-
 
 if __name__ == "__main__":
     Find_cifa_10()
     
-    
-    
-
-

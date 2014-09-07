@@ -18,6 +18,6 @@ deploy_key_rsa
 # Paper And Images
 *.pdf
 *.bmp
-
+*.png
 *.jpg
 *.jpeg
