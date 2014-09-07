@@ -26,8 +26,8 @@ Two examples inllustrate how to use this to visulize CNN. Admittedlly, currentle
 
 
 >####Example2
-> Use heaps to find samples that yield max activation value in 2,23,60,12,45,9th kernel and visualize what those kernels see separatly by setting other feature map to zeros. 
-More specifically, the the 23rd kernel is sensitive to boats, the 12nd and 45th kernel respones to cars strongly and the 9th kernel like airplanes very much.
+> Use heaps and a simple forward conv net to find samples that yield max activation value in 2,23,60,12,45,9th kernel. And then visualize what those kernels see separatly, using a deconvnet, by setting other feature map to zeros. 
+More specifically, the 23rd kernel is sensitive to boats, the 12nd and 45th kernel respones to cars strongly and the 9th kernel like airplanes very much.
 
 >![EX2](https://raw.githubusercontent.com/ChienliMa/DeCoonvNet/master/Example2.png "EX2")  
 
