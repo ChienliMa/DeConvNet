@@ -32,6 +32,6 @@ More specifically, the 23rd kernel is sensitive to boats, the 12nd and 45th kern
 >![EX2](https://raw.githubusercontent.com/ChienliMa/DeCoonvNet/master/Example2.png "EX2")  
 
 
-###Future Improvement:
+###Future Improvemence:
 >1. 完善API, less reshape is needed, 输入三维矩阵，在内使用theano接口，在外就算了
 >2. convert this into a theano op and push it to theano。master
