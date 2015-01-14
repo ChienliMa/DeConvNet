@@ -1,4 +1,4 @@
-DeCoonvNet
+DeConvNet
 ===========
 
 Personal implementation of DeConvNet, used to visualize CNN. Follow Pro.Zealer's paper:
