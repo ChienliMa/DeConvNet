@@ -6,10 +6,7 @@ import numpy as np
 import theano
 import theano.tensor as T
 from theano.tensor.nnet import conv
-
 from max_pool import max_pool_2d, max_uppool_2d
-
-
 
 # linear activation function
 def linear( input ):
@@ -40,7 +37,6 @@ class CPRStage_Up( object ):
         assert W != None
         assert b != None
         assert image_shape[1] == filter_shape[1]
-
 
         self.image_shape = image_shape
         self.filter_shape = filter_shape
@@ -84,8 +80,6 @@ class CPRStage_Up( object ):
         return np.asarray(output, dtype = theano.config.floatX), switch_map
 
 
-
-
 class CPRStage_Down( object ):
     """
     A class to discribe one stage in the deconvnet.
@@ -124,15 +118,11 @@ class CPRStage_Down( object ):
         W = W[:,:,::-1,::-1]
         self.W = theano.shared( np.asarray(W,dtype=theano.config.floatX) )
         self.b = theano.shared( np.asarray(b,dtype=theano.config.floatX)  )
-
-
-
  
         x = T.tensor4('x')
         conv_out = conv.conv2d( input = x  , filters = W, filter_shape = filter_shape,
                                                 image_shape = image_shape, border_mode = 'full' )
         self.conv = theano.function( [ x ] , conv_out, allow_input_downcast=True )
-
 
     def GetOutput( self, input, switch_map ):
         """
@@ -152,7 +142,6 @@ class CPRStage_Down( object ):
           input = input.reshape( input.shape[2:4] )
         else: 
           input = input.reshape( input.shape[1:4] )
-         
           
         up_pooled_out = max_uppool_2d( input, switch_map, poolsize = self.poolsize )
 

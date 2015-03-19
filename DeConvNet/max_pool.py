@@ -44,7 +44,6 @@ def max_pool_2d( input, poolsize = 2):
     return output, switch_map
 
 
-
 def max_uppool_2d( input, switch_map, poolsize = 2):
     """
     A function executing max uppooling with each feature map
@@ -57,11 +56,9 @@ def max_uppool_2d( input, switch_map, poolsize = 2):
 
     :type poolsize: int
     "param poolsize":  the downsampling (pooling) factor
-
     """
     assert input.shape[-2:] == switch_map.shape[-2:]
     assert input.ndim == 2 or input.ndim == 3
-
 
     if input.ndim == 3:
         num_of_map, w_in, h_in = input.shape

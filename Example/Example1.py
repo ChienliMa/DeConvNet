@@ -11,8 +11,8 @@ class_path = parent_folder + '/' + 'DeConvNet'
 if class_path not in sys.path:
     sys.path.append( class_path )
 from CPRStage import CPRStage_Up,CPRStage_Down
-
-
+import theano
+theano.config.floatX = 'float32'
 def activation( a ):
     return ( np.abs(a) + a ) /2
 
